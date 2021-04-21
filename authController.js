@@ -38,7 +38,7 @@ class authController {
 
     async login (req, res) {
         try {
-            const{mail, username, password} = req.body
+            const { mail, username, password } = req.body
             const user = await User.findOne({mail})
             if (!user) {
                 return res.status(400).json({message: 'Nety Usera'})

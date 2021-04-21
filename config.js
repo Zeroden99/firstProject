@@ -1,3 +1,3 @@
 module.exports = {
-    secret: 'Secret_key_Random'
+    secret: 'SECRET_KEY_RANDOM'
 }
