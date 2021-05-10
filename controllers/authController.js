@@ -6,10 +6,9 @@ const {validationResult} = require('express-validator')
 const {secret} = require('../config');
 const { models } = require('mongoose');
 
-const generateAccessToken = (id, roles) => {
+const generateAccessToken = (id) => {
     const payload = {
-        id,
-        roles
+        id
     }
     return jwt.sign(payload, secret, {expiresIn: '24h'})
 } 
@@ -48,7 +47,7 @@ class authController {
             if (!validPassword) {
                 return res.status(400).json({message: 'Nepravelnii paroll'})
             }
-            const token = generateAccessToken(user._id, user.roles)
+            const token = generateAccessToken(user._id)
             return res.json({token})
 
         } catch (e) {
@@ -57,11 +56,9 @@ class authController {
         }
     }
 
+
     async getUsers (req, res) {
         try {
-            
-         const users = await User.find()
-         res.json(users)
             
         } catch (e) {
             console.log(e)

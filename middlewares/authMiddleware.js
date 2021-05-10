@@ -16,6 +16,6 @@ module.exports = function (req, res, next) {
         next()
     } catch(e) {
         console.log(e)
-        return res.status(400).json({message: 'pls login'})
+        return res.status(400).json({message: 'errrorrr'})
     }
 }

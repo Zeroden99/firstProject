@@ -5,13 +5,16 @@ exports.validateUser =
 [
     check('mail')
         .trim()
-        .normalizeEmail()
+        .not()
         .isEmpty()
+        .bail()
+        .withMessage('Email can not be Empty!')
         .isEmail()
         .withMessage('Invalid Email address!')
         .bail(),
     check('username')
         .trim()
+        .not()
         .isEmpty()
         .withMessage('Username can not be Empty!')
         .bail()
@@ -23,8 +26,9 @@ exports.validateUser =
         .bail(),
     check('password')
         .trim()
+        .not()
         .isEmpty()
-        .withMessage('Username can not be Empty!')
+        .withMessage('Password can not be Empty!')
         .bail()
         .isLength({ min: 6 })
         .withMessage('Minimum 6 characters required!')
