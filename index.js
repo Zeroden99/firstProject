@@ -1,9 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const authRouter = require('./authRouter')
+const authRouter = require('./routes/authRouter')
+const User = require('./models/User')
 const PORT = process.env.PORT || 5000
 
 const app = express()
+
+
+
 
 app.use(express.json())
 app.use('/auth', authRouter)
@@ -13,6 +17,7 @@ const start  = async () => {
         app.listen(PORT, ()=> console.log(`server start ${PORT}`))
     } catch (e) {
         console.log(e)
+        return res.status(500).json({ message: 'Server Erroorrr' })
     }
 }
 

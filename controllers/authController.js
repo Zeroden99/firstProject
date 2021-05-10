@@ -1,9 +1,10 @@
-const User = require('./models/User')
-const Role = require('./models/Role')
+const User = require('../models/User')
+const Role = require('../models/Role')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const {validationResult} = require('express-validator')
-const {secret} = require('./config')
+const {secret} = require('../config');
+const { models } = require('mongoose');
 
 const generateAccessToken = (id, roles) => {
     const payload = {
@@ -38,10 +39,10 @@ class authController {
 
     async login (req, res) {
         try {
-            const { mail, username, password } = req.body
+            const { mail, password } = req.body
             const user = await User.findOne({mail})
             if (!user) {
-                return res.status(400).json({message: 'Nety Usera'})
+                return res.status(404).json({message: 'Not Found'})
             }
             const validPassword = bcrypt.compareSync(password, user.password)
             if (!validPassword) {
@@ -58,10 +59,24 @@ class authController {
 
     async getUsers (req, res) {
         try {
-            const users = await User.find()
-            res.json('server work')
+            
+         const users = await User.find()
+         res.json(users)
+            
         } catch (e) {
             console.log(e)
+        }
+    }
+
+    async userId(req, res) {
+        try {
+            const {mail} = req.body
+            const user = await User.findOne({mail})
+            res.json(user)
+
+        } catch (e) {
+            console.log(e)
+            res.status(404).json({ message: 'not found' })
         }
     }
 }
