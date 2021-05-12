@@ -6,7 +6,7 @@ const {validationResult} = require('express-validator')
 const {secret} = require('../config');
 const { models } = require('mongoose');
 
-const generateAccessToken = (id) => {
+const generateAccessToken = (id, username) => {
     const payload = {
         id
     }
@@ -47,7 +47,7 @@ class authController {
             if (!validPassword) {
                 return res.status(400).json({message: 'Nepravelnii paroll'})
             }
-            const token = generateAccessToken(user._id)
+            const token = generateAccessToken(user._id, user.username)
             return res.json({token})
 
         } catch (e) {
@@ -59,12 +59,24 @@ class authController {
 
     async getUsers (req, res) {
         try {
-            
-        } catch (e) {
-            console.log(e)
-        }
-    }
+                const authHeader = req.headers.authorization;
 
+                if (authHeader) {
+                    const token = authHeader.split(' ')[1];
+
+                    const decoded = jwt.verify(token, secret)
+
+                    const userId = decoded.id
+
+                    const user = await User.find({_id: userId})
+                    
+                    res.json(user)
+
+                    }  }
+                      catch (e) {
+            console.log(e)
+        }    
+}
     async userId(req, res) {
         try {
             const {mail} = req.body
