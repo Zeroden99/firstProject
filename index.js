@@ -2,7 +2,24 @@ const express = require('express')
 const mongoose = require('mongoose')
 const authRouter = require('./routes/authRouter')
 const User = require('./models/User')
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
 const PORT = process.env.PORT || 5000
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'Simple Api',
+            description: 'information'
+           
+        }
+    },
+    apis: ['index.js'],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions)
+
+
 
 const app = express()
 
